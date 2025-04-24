@@ -1,8 +1,10 @@
 /*
     * open Command Prompt and run:
+        g++ main.cpp -o main.exe
         main.exe sdbm < input.txt > output.txt
 
     * or open power shell and run:
+        g++ main.cpp -o main.exe
         Get-Content input.txt | ./main.exe sdbm | Set-Content output.txt
 
     * or uncomment (if commented) the following lines to read from a file instead of standard input inside the main function:
@@ -15,6 +17,10 @@
             cout << "Error opening input or output file." << endl;
             return 0;
         }
+
+    * or run the following command in the Linux terminal:
+        g++ -fsanitize=address -g main.cpp -o main.exe
+        ./main.exe < input.txt > output.txt
 */
 
 #include <iostream>

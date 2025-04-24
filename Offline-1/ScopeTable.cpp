@@ -11,11 +11,12 @@ class ScopeTable
 {
     int scopeId;
     int numberOfBuckets;
-    bool isPrintable = true;
-    int totalCollisions = 0;
     shared_ptr<ScopeTable> parentScope;
     shared_ptr<SymbolInfo> *table;
     function<unsigned int(string, unsigned int)> hashFunction;
+
+    bool isPrintable = true;
+    int totalCollisions = 0;
 
 public:
     ScopeTable(int numberOfBuckets, int scopeId, shared_ptr<ScopeTable> parentScope = nullptr, function<unsigned int(string, int)> hashFunc = Hash::getHashFunction("SDBM"))

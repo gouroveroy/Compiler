@@ -8,10 +8,11 @@ using namespace std;
 class SymbolTable
 {
     int numberOfBuckets;
-    bool isPrintable = true;
-    int globalScopeId = 1;
     shared_ptr<ScopeTable> currentScope;
     function<unsigned int(string, unsigned int)> hashFunction;
+
+    bool isPrintable = true;
+    int globalScopeId = 1;
 
 public:
     SymbolTable(int n, function<unsigned int(string, unsigned int)> hashFunction = Hash::SDBMHash)
