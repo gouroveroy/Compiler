@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <functional>
 #include "ScopeTable.cpp"
 
 using namespace std;
@@ -10,9 +11,11 @@ class SymbolTable
     bool isPrintable = true;
     int globalScopeId = 1;
     shared_ptr<ScopeTable> currentScope;
+    function<unsigned int(string, unsigned int)> hashFunction;
 
 public:
-    SymbolTable(int n)
+    SymbolTable(int n, function<unsigned int(string, unsigned int)> hashFunction = Hash::SDBMHash)
+        : hashFunction(hashFunction)
     {
         numberOfBuckets = n;
         currentScope = nullptr;
@@ -60,7 +63,7 @@ public:
 
     void enterScope()
     {
-        shared_ptr<ScopeTable> newScope = make_shared<ScopeTable>(numberOfBuckets, globalScopeId, currentScope);
+        shared_ptr<ScopeTable> newScope = make_shared<ScopeTable>(numberOfBuckets, globalScopeId, currentScope, hashFunction);
         currentScope = newScope;
         if (isPrintable)
         {

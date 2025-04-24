@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <functional>
 #include "SymbolInfo.cpp"
 #include "Hash.cpp"
 
@@ -11,14 +12,17 @@ class ScopeTable
     int scopeId;
     int numberOfBuckets;
     bool isPrintable = true;
+    int totalCollisions = 0;
     shared_ptr<ScopeTable> parentScope;
     shared_ptr<SymbolInfo> *table;
+    function<unsigned int(string, unsigned int)> hashFunction;
 
 public:
-    ScopeTable(int numberOfBuckets, int scopeId, shared_ptr<ScopeTable> parentScope = nullptr)
+    ScopeTable(int numberOfBuckets, int scopeId, shared_ptr<ScopeTable> parentScope = nullptr, function<unsigned int(string, int)> hashFunc = Hash::getHashFunction("SDBM"))
         : numberOfBuckets(numberOfBuckets),
           scopeId(scopeId),
-          parentScope(parentScope)
+          parentScope(parentScope),
+          hashFunction(hashFunc)
     {
         table = new shared_ptr<SymbolInfo>[numberOfBuckets];
         for (int i = 0; i < numberOfBuckets; i++)
@@ -59,6 +63,16 @@ public:
         this->isPrintable = isPrintable;
     }
 
+    int getTotalCollisions()
+    {
+        return totalCollisions;
+    }
+
+    void setTotalCollisions(int totalCollisions)
+    {
+        this->totalCollisions = totalCollisions;
+    }
+
     shared_ptr<ScopeTable> getParentScope()
     {
         return parentScope;
@@ -71,7 +85,7 @@ public:
 
     int getTableIndex(string symbolName)
     {
-        uint64_t hash = Hash::SDBMHash(symbolName, numberOfBuckets);
+        unsigned int hash = hashFunction(symbolName, numberOfBuckets);
         return hash % numberOfBuckets;
     }
 
@@ -115,6 +129,7 @@ public:
             }
             else
             {
+                totalCollisions++;
                 while (currentSymbol->getNextSymbol() != nullptr)
                 {
                     currentSymbol = currentSymbol->getNextSymbol();

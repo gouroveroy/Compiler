@@ -1,6 +1,26 @@
+/*
+    * open Command Prompt and run:
+        main.exe sdbm < input.txt > output.txt
+
+    * or open power shell and run:
+        Get-Content input.txt | ./main.exe sdbm | Set-Content output.txt
+
+    * or uncomment (if commented) the following lines to read from a file instead of standard input inside the main function:
+        string inputFileName = "input.txt";
+        string outputFileName = "output.txt";
+        FILE *fin = freopen(inputFileName.c_str(), "r", stdin);
+        FILE *fout = freopen(outputFileName.c_str(), "w", stdout);
+        if (!fin || !fout)
+        {
+            cout << "Error opening input or output file." << endl;
+            return 0;
+        }
+*/
+
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <limits>
 #include "SymbolTable.cpp"
 
@@ -59,24 +79,35 @@ string structOrUnionSymbolType(string s[], int size)
     return type;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    string inputFileName = "input.txt";
-    string outputFileName = "output.txt";
-    FILE *fin = freopen(inputFileName.c_str(), "r", stdin);
-    FILE *fout = freopen(outputFileName.c_str(), "w", stdout);
-    if (!fin || !fout)
+    function<unsigned int(string, unsigned int)> hashFunc = Hash::SDBMHash;
+
+    if (argc > 1)
     {
-        cout << "Error opening input or output file." << endl;
-        return 0;
+        string hashType = argv[1];
+        hashFunc = Hash::getHashFunction(hashType);
     }
 
+    /*
+        string inputFileName = "input.txt";
+        string outputFileName = "output.txt";
+        FILE *fin = freopen(inputFileName.c_str(), "r", stdin);
+        FILE *fout = freopen(outputFileName.c_str(), "w", stdout);
+        if (!fin || !fout)
+        {
+            cout << "Error opening input or output file." << endl;
+            return 0;
+        }
+    */
+
     int numberOfBuckets;
+    int collisions = 0;
 
     cin >> numberOfBuckets;
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the newline character after the number of buckets
 
-    SymbolTable symbolTable(numberOfBuckets);
+    SymbolTable symbolTable(numberOfBuckets, hashFunc);
     string line;
     int commandCount = 0;
 
@@ -139,6 +170,7 @@ int main()
                 string symbolType = functionSymbolType(arguments, parameterCount);
                 symbolTable.Insert(symbolName, symbolType);
             }
+
             else if (arguments[1] == "STRUCT" || arguments[1] == "UNION")
             {
                 if (parameterCount % 2)
@@ -153,6 +185,7 @@ int main()
                 string symbolType = structOrUnionSymbolType(arguments, parameterCount);
                 symbolTable.Insert(symbolName, symbolType);
             }
+            
             else
             {
                 if (checkParamMismatch(command, 2, parameterCount))
@@ -229,6 +262,7 @@ int main()
                     continue;
                 }
             }
+            collisions += symbolTable.getCurrentScope()->getTotalCollisions();
             symbolTable.exitScope();
         }
 
@@ -240,8 +274,10 @@ int main()
             }
             while (symbolTable.getCurrentScope()->getParentScope() != nullptr)
             {
+                collisions += symbolTable.getCurrentScope()->getTotalCollisions();
                 symbolTable.exitScope();
             }
+            collisions += symbolTable.getCurrentScope()->getTotalCollisions();
             symbolTable.exitScope();
             break;
         }
@@ -251,4 +287,18 @@ int main()
             cout << "Invalid command" << endl;
         }
     }
+
+    ofstream collisionOut("collision.txt");
+    if (!collisionOut)
+    {
+        cerr << "Failed to open collision.txt" << endl;
+    }
+    else
+    {
+        collisionOut << "Total Collisions: " << collisions << endl;
+        collisionOut << "Collision Ratio: " << 1.0 * collisions / numberOfBuckets << endl;
+        collisionOut.close();
+    }
+
+    return 0;
 }
