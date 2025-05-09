@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    string hashFunctions[] = {"sdbm", "djb2", "fnv"}; // Replaced vector<string> with string array
+    string hashFunctions[] = {"sdbm", "bkdr", "js"}; // Replaced vector<string> with string array
     int hashFunctionCount = sizeof(hashFunctions) / sizeof(hashFunctions[0]); // Get the size of the array
     string reportFile = "report.txt";
 
@@ -27,7 +27,10 @@ int main()
     for (int i = 0; i < hashFunctionCount; i++) // Iterate over the string array
     {
         string hash = hashFunctions[i];
-        string command = "main.exe " + hash + " < input.txt > output.txt";
+        // for linux use
+        string command = "./main.exe " + hash + " < input.txt > output.txt";
+        // for windows use
+        // string command = "main.exe " + hash + " < input.txt > output.txt";
         system(command.c_str());
 
         ifstream tempOut("collision.txt");

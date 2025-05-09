@@ -1,11 +1,11 @@
 /*
     * open Command Prompt and run:
-        g++ main.cpp -o main.exe
-        main.exe sdbm < input.txt > output.txt
+        g++ 2105017_main.cpp -o 2105017_main.exe
+        2105017_main.exe sdbm < input.txt > output.txt
 
     * or open power shell and run:
-        g++ main.cpp -o main.exe
-        Get-Content input.txt | ./main.exe sdbm | Set-Content output.txt
+        g++ 2105017_main.cpp -o 2105017_main.exe
+        Get-Content input.txt | ./2105017_main.exe sdbm | Set-Content output.txt
 
     * or uncomment (if commented) the following lines to read from a file instead of standard input inside the main function:
         string inputFileName = "input.txt";
@@ -19,8 +19,8 @@
         }
 
     * or run the following command in the Linux terminal:
-        g++ -fsanitize=address -g main.cpp -o main.exe
-        ./main.exe < input.txt > output.txt
+        g++ 2105017_main.cpp 2105017_symbol_table.cpp 2105017_scope_table.cpp 2105017_symbol_info.cpp 2105017_Hash.cpp -o 2105017_main.exe -fsanitize=address
+        ./2105017_main.exe sdbm < input.txt > output.txt
 */
 
 #include <iostream>
@@ -28,7 +28,7 @@
 #include <sstream>
 #include <fstream>
 #include <limits>
-#include "SymbolTable.cpp"
+#include "2105017_symbol_table.cpp"
 
 using namespace std;
 
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     SymbolTable symbolTable(numberOfBuckets, hashFunc);
     string line;
     int commandCount = 0;
-    int hashTableCount = 1;
+    int hashTableCount = 0;
 
     while (getline(cin, line))
     {
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
                 string symbolType = structOrUnionSymbolType(arguments, parameterCount);
                 symbolTable.Insert(symbolName, symbolType);
             }
-            
+
             else
             {
                 if (checkParamMismatch(command, 2, parameterCount))

@@ -116,7 +116,6 @@ int main(int argc, char *argv[])
     SymbolTable symbolTable(numberOfBuckets, hashFunc);
     string line;
     int commandCount = 0;
-    int hashTableCount = 1;
 
     while (getline(cin, line))
     {
@@ -271,7 +270,6 @@ int main(int argc, char *argv[])
             }
             collisions += symbolTable.getCurrentScope()->getTotalCollisions();
             symbolTable.exitScope();
-            hashTableCount++;
         }
 
         else if (command == "Q")
@@ -304,7 +302,7 @@ int main(int argc, char *argv[])
     else
     {
         collisionOut << "Total Collisions: " << collisions << endl;
-        collisionOut << "Collision Ratio: " << 1.0 * collisions / (numberOfBuckets * hashTableCount) << endl;
+        collisionOut << "Collision Ratio: " << 1.0 * collisions / numberOfBuckets << endl;
         collisionOut.close();
     }
 
