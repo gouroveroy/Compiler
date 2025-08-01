@@ -142,7 +142,7 @@ char getSpecialCharAscii(string text)
 {
     char ascii;
     char specialChar = text[2];
-    
+
     switch (specialChar)
     {
         case '0':
@@ -288,130 +288,130 @@ NEWLINE                     (\r\n|\n)
 MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
 
 %%
-{WHITESPACE}               { 
+{WHITESPACE}               {
                                 // Ignore whitespace
                            }
 
-{NEWLINE}                  { 
+{NEWLINE}                  {
                                 lineCount++;
                            }
 
-{KEYWORD}                  { 
-                                handleKeywordLexeme(yytext); 
+{KEYWORD}                  {
+                                handleKeywordLexeme(yytext);
                            }
 
-{ADDOP}                    { 
+{ADDOP}                    {
                                 LexicalAnalyzer lexicalAnalyzer("ADDOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{MULOP}                    { 
+{MULOP}                    {
                                 LexicalAnalyzer lexicalAnalyzer("MULOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{INCOP}                    { 
+{INCOP}                    {
                                 LexicalAnalyzer lexicalAnalyzer("INCOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{RELOP}                    { 
+{RELOP}                    {
                                 LexicalAnalyzer lexicalAnalyzer("RELOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{ASSIGNOP}                 { 
+{ASSIGNOP}                 {
                                 LexicalAnalyzer lexicalAnalyzer("ASSIGNOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{LOGICOP}                  { 
+{LOGICOP}                  {
                                 LexicalAnalyzer lexicalAnalyzer("LOGICOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{BITOP}                    { 
+{BITOP}                    {
                                 LexicalAnalyzer lexicalAnalyzer("BITOP", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{NOT}                      { 
+{NOT}                      {
                                 LexicalAnalyzer lexicalAnalyzer("NOT", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{LPAREN}                   { 
+{LPAREN}                   {
                                 LexicalAnalyzer lexicalAnalyzer("LPAREN", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{RPAREN}                   { 
+{RPAREN}                   {
                                 LexicalAnalyzer lexicalAnalyzer("RPAREN", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{LCURL}                    { 
+{LCURL}                    {
                                 LexicalAnalyzer lexicalAnalyzer("LCURL", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{RCURL}                    { 
+{RCURL}                    {
                                 LexicalAnalyzer lexicalAnalyzer("RCURL", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{LTHIRD}                   { 
+{LTHIRD}                   {
                                 LexicalAnalyzer lexicalAnalyzer("LTHIRD", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{RTHIRD}                   { 
+{RTHIRD}                   {
                                 LexicalAnalyzer lexicalAnalyzer("RTHIRD", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{COMMA}                    { 
+{COMMA}                    {
                                 LexicalAnalyzer lexicalAnalyzer("COMMA", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{SEMICOLON}                { 
+{SEMICOLON}                {
                                 LexicalAnalyzer lexicalAnalyzer("SEMICOLON", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{CONST_INT}                { 
+{CONST_INT}                {
                                 LexicalAnalyzer lexicalAnalyzer("CONST_INT", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
-                           }
-    
-{CONST_FLOAT}              { 
-                                LexicalAnalyzer lexicalAnalyzer("CONST_FLOAT", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{MULTI_DECIMAL}            { 
+{CONST_FLOAT}              {
+                                LexicalAnalyzer lexicalAnalyzer("CONST_FLOAT", yytext);
+                                handleTokenLexeme(lexicalAnalyzer);
+                           }
+
+{MULTI_DECIMAL}            {
                                 handleError("Too many decimal points " + string(yytext) + "\n");
                            }
 
-{ILL_FORM}                 { 
+{ILL_FORM}                 {
                                 handleError("Ill formed number " + string(yytext) + "\n");
                            }
 
-{IDENTIFIER}               { 
+{IDENTIFIER}               {
                                 LexicalAnalyzer lexicalAnalyzer("ID", yytext);
-                                handleTokenLexeme(lexicalAnalyzer); 
+                                handleTokenLexeme(lexicalAnalyzer);
                            }
 
-{INVALID_SUFFIX_NUMERIC}   { 
+{INVALID_SUFFIX_NUMERIC}   {
                                 handleError("Invalid prefix on ID or invalid suffix on Number " + string(yytext));
                            }
 
-{MULTI_CHAR_LITERAL}       { 
+{MULTI_CHAR_LITERAL}       {
                                 handleError("Multi character constant error " + string(yytext) + "\n");
                            }
 
-{SINGLE_QUOTE}             { 
+{SINGLE_QUOTE}             {
                                 BEGIN(CONST_CHAR_TOKENIZER);
                                 currentCharacter = yytext;
                                 currentConvertedCharacter = "";
@@ -424,13 +424,13 @@ MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
                                 BEGIN(INITIAL);
                             }
 
-    {NEWLINE}               { 
+    {NEWLINE}               {
                                 handleError("Unterminated character " + currentCharacter + "\n");
                                 lineCount++;
                                 BEGIN(INITIAL);
                             }
 
-    <<EOF>>                 { 
+    <<EOF>>                 {
                                 handleError("Unterminated character " + currentCharacter);
                                 BEGIN(INITIAL);
                             }
@@ -445,47 +445,47 @@ MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
                                 currentConvertedCharacter += getSpecialCharAscii(yytext);
                             }
 
-    .                       { 
+    .                       {
                                 currentCharacter += yytext;
                                 currentConvertedCharacter += yytext;
                             }
 }
 
-{DOUBLE_QUOTE}             { 
+{DOUBLE_QUOTE}             {
                                 BEGIN(STRING_TOKENIZER);
                                 currentString = yytext;
                                 currentConvertedString = "";
                            }
 
 <STRING_TOKENIZER>{
-    {BACKSLASH}{DOUBLE_QUOTE} { 
+    {BACKSLASH}{DOUBLE_QUOTE} {
                                 currentString += yytext;
                                 currentConvertedString += getSpecialCharAscii(yytext);
                            }
-                           
-    {DOUBLE_QUOTE}         { 
+
+    {DOUBLE_QUOTE}         {
                                 currentString += yytext;
                                 handleStringLexeme();
                                 BEGIN(INITIAL);
                            }
 
-    {BACKSLASH}{NEWLINE}   { 
+    {BACKSLASH}{NEWLINE}   {
                                 lineCount++;
                                 currentString += yytext;
                            }
 
-    {NEWLINE}              { 
+    {NEWLINE}              {
                                 handleError("Unterminated string " + currentString);
                                 lineCount++;
                                 BEGIN(INITIAL);
                            }
 
-    <<EOF>>                { 
+    <<EOF>>                {
                                 handleError("Unterminated string " + currentString);
                                 BEGIN(INITIAL);
                            }
 
-    .                      { 
+    .                      {
                                 currentString += yytext;
                                 currentConvertedString += yytext;
                            }
@@ -497,7 +497,7 @@ MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
                            }
 
 <SLASH_COMMENT_TOKENIZER>{
-    {BACKSLASH}{NEWLINE}   { 
+    {BACKSLASH}{NEWLINE}   {
                                 currentSlashComment += yytext;
                                 lineCount++;
                            }
@@ -508,12 +508,12 @@ MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
                                 BEGIN(INITIAL);
                            }
 
-    <<EOF>>                { 
+    <<EOF>>                {
                                 handleCurrentSlashComment();
                                 BEGIN(INITIAL);
                            }
 
-    .                      { 
+    .                      {
                                 currentSlashComment += yytext;
                            }
 }
@@ -524,28 +524,28 @@ MULTI_CHAR_LITERAL          \'({NON_BACKSLASH}|{SPECIAL_CHAR}){2,}\'
                            }
 
 <STAR_COMMENT_TOKENIZER>{
-    \*\/                   { 
+    \*\/                   {
                                 currentStarComment += yytext;
                                 handleCurrentStarComment();
                                 BEGIN(INITIAL);
                            }
 
-    {NEWLINE}              { 
+    {NEWLINE}              {
                                 currentStarComment += yytext;
                                 lineCount++;
                            }
 
-    <<EOF>>                { 
+    <<EOF>>                {
                                 handleError("Unterminated comment " + currentStarComment);
                                 BEGIN(INITIAL);
                            }
 
-    .                      { 
+    .                      {
                                 currentStarComment += yytext;
                            }
 }
 
-.                          { 
+.                          {
                                 handleError("Unrecognized character " + string(yytext));
                            }
 

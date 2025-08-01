@@ -28,6 +28,7 @@ public:
         if (this->parentScope != nullptr)
         {
             this->scopeId = parentScope->getScopeId() + "." + to_string(parentScope->getNumberOfChildren() + 1);
+            parentScope->setNumberofChildren(parentScope->getNumberOfChildren() + 1);
         }
         else
         {
@@ -175,7 +176,8 @@ public:
             {
                 cout << "\t'" << symbolName << "' already exists in the current ScopeTable" << endl;
             }
-            logFile << "< " << symbolName << " : " << symbolType << " > already exists in ScopeTable# " << scopeId << " at position " << lookupResult.second.first - 1 << ", " << lookupResult.second.second - 1 << endl << endl;
+            logFile << "< " << symbolName << " : " << symbolType << " > already exists in ScopeTable# " << scopeId << " at position " << lookupResult.second.first - 1 << ", " << lookupResult.second.second - 1 << endl
+                    << endl;
             return false;
         }
     }
