@@ -32,7 +32,6 @@ string optimizeAssembly(const string &code)
         lines.push_back(line);
 
     // First pass: Remove dead code after RET/INT 21H instructions
-    // But preserve labels that might be jumped to from before the RET
     vector<string> deadCodeRemoved;
     bool inFunction = false;
     bool foundReturn = false;
@@ -73,20 +72,11 @@ string optimizeAssembly(const string &code)
             }
             // Skip any subsequent return statements
         }
-        // After return, keep labels but skip other instructions
+        // Skip dead code after return
         else if (inFunction && foundReturn)
         {
-            // Keep labels as they might be jumped to from before the return
-            if (trimmed.length() > 0 && trimmed.back() == ':' && trimmed[0] == 'L')
-            {
-                deadCodeRemoved.push_back(lines[i]);
-                foundReturn = false; // Reset foundReturn as we have reachable code after this label
-            }
-            else
-            {
-                // Skip this line as it's dead code after return
-                continue;
-            }
+            // Skip this line as it's dead code after return
+            continue;
         }
         else
         {
