@@ -1,0 +1,4 @@
+Line No. 1: Token <VECTOR_TYPE> Lexeme vector <int> found
+Line No. 2: Token <VECTOR_TYPE> Lexeme vector <vector <float>> found
+Line No. 3: Token <VECTOR_TYPE> Lexeme vector <vector <vector <double>>> found
+Line No. 4: Invalid input

@@ -1,0 +1,22 @@
+# Virtual environments
+**/venv/
+**/antlr4_venv/
+**/__pycache__/
+*.pyc
+
+# ANTLR generated files
+**/ANTLR/
+**/.antlr/
+**/antlr4/
+
+# VS Code settings (optional - you might want to keep these)
+# .vscode/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.class
+*.jar
+*.tokens
